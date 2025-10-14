@@ -1,0 +1,66 @@
+Welcome to Defend Rest Attack Counter Steal (DRACS)!
+
+
+--ABOUT THE GAME--
+DRACS was developed for sole teaching/learning experience.
+I was inspired by a Rock Paper Scissors algorithm where the opponent used machine learning algorithms to predict the player's move based off choice patterns.
+This game does provide the user with the choice of playing against another player, or against the default AI.
+DRACS employs machine learning algorithms to predict the move the move from a set number of the previous moves played by the player.
+
+
+--HOW TO PLAY--
+In this game, the main goal is defeating the opponent.
+By default, both players start with 5 health points (hp) and 0 mana points (mp).
+You cannot go over 5 hp, and 3 mp. Neither can you go in the negatives.
+Every turn, both players make their choice of action amongst the five that make up DRACS (more below).
+The game ends when either player falls to 0 hp, or after 20 turns (by default).
+
+
+--HOW TO WIN--
+Simple, defeat the opponent before you are bested.
+If the allowable number of turns reach 0, the winner is decided on the following:
+Each hp = 1 point
+Each mp = 0.75 point
+Whichever player has the greatest score sum will be the winner.
+
+
+--ACTIONS--
+DRACS has 5 main types of actions, each with their benefits and weakness.
+
+***DEFEND***
+DEFEND allows the user to block any incoming physical attacks.
+On a successful block (i.e., the opponent decided to use ATTACK), the attacker will lose 1 mp and the user will not lose any hp.
+If the opponent does not attack, nothing occurs.
+
+HOWEVER, if the opponent uses STEAL, the user will lose 1 mp. If the user does not have any mp left, the opponent will instead steal 1 hp.
+Make sure to balance DEFEND with other actions to prevent that from occuring.
+
+***REST***
+REST allows the user to gain 2 mp.
+
+***ATTACK***
+ATTACK allows the user to damage the opponent for 1 hp.
+Be careful of COUNTER or STEAL.
+
+***COUNTER***
+COUNTER requires 1 mp to use, however when a successful counter occurs, the opponent will lose 1 hp instead.
+COUNTER only works when the opponent uses ATTACK.
+
+***STEAL***
+STEAL is the main special ability in the game.
+STEAL costs 3 mp to uses but will have a variety of effects depending on the opponent's action.
+
+When using STEAL:
+	IF the opponent uses DEFEND -> Steal 1 mp and gives it to the user's. IF the opponent does not have 1 mp, steal 1 hp instead.
+	IF the opponent uses REST -> Steal 1 mp and 1 hp and add it to the user's.
+	IF the opponent uses ATTACK -> Steal 1 hp from the opponent. The result is the opponent losing 1 hp, while the user remains at what they had. Can save from death.
+	IF the opponent uses COUNTER -> Steal 1 mp and 1 hp and add it to the user's.
+	IF the opponent uses STEAL -> Both nulify one another and nothing occurs.
+
+
+--PARAMETERS--
+The user can change the parameters of the game such as hp, mp, or number of turn in the parameter option at the start of the game.
+
+
+--FUTURE--
+If I find the time, I may modify the ML algorithm or add special opponents.
