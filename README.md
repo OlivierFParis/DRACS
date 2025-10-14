@@ -61,7 +61,7 @@ Each model is defined in `computer.py` and can play either against a human playe
 ## Repository Structure
 
 ```
-DRACS_ML_GAME_Project/
+DRACS/
 │
 ├── game/
 │   ├── main.py            # Launches the game and manages start menu
