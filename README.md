@@ -64,20 +64,22 @@ Each model is defined in `computer.py` and can play either against a human playe
 DRACS/
 │
 ├── game/
-│   ├── main.py            # Launches the game and manages start menu
-│   ├── game.py            # Core game loop and win/loss conditions
-│   ├── player.py          # Human player logic and state tracking
-│   ├── computer.py        # AI model definitions and decision logic
-│   └── Rules.txt          # Extra Information about the game
+│   ├── main.py                # Launches the game and manages start menu
+│   ├── game.py                # Core game loop and win/loss conditions
+│   ├── player.py              # Human player logic and state tracking
+│   ├── computer.py            # AI model definitions and decision logic
+│   └── Rules.txt              # Additional gameplay information and mechanics
 │
 ├── data/
-│   └── GBC_Training.csv    # Training dataset for the GBC model
+│   └── GBC_Training.csv       # Training dataset for the Gradient Boosting model
 │
 ├── models/
-│   ├── DRACS_ADPT_model_AIvsAI_TRAINED.pkl        # Saved adaptive model
-│   └── DRACS_GBC_model_AIvsAI_TRAINED.pkl         # Trained gradient boosting model
+│   ├── DRACS_ADPT_model_AIvsAI_TRAINED.pkl   # Saved adaptive (SGD) model
+│   └── DRACS_GBC_model_AIvsAI_TRAINED.pkl    # Trained Gradient Boosting model
 │
-└── README.md           # Project documentation
+├── requirements.txt           # Python dependencies for the project
+├── LICENSE                    # MIT license file
+└── README.md                  # Project documentation
 ```
 
 ---
@@ -86,6 +88,12 @@ DRACS/
 
 All game rounds can be logged automatically through the **DataLogger** class, producing a CSV file containing both **features** and **labels**.
 To proceed with the training of all the models, please select option "Training" in the main menu.
+
+### Saving and Logs
+* All trained models are stored in the /models directory.
+* Gameplay data for training the Gradient Boosting model is logged automatically in /data as a CSV file.
+* To retrain the GBC model on new data, simply use the training option in the main menu.
+  * Currently the GBC model in /models need to be manually deleted for it to be retrained with the new data. 
 
 ---
 
@@ -100,7 +108,7 @@ pip install -r requirements.txt
 ### Running the Game
 
 ```bash
-python main.py
+python game/main.py
 ```
 
 ### Modes
