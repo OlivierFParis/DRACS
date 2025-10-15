@@ -91,6 +91,12 @@ To proceed with the training of all the models, please select option "Training" 
 
 ## Usage
 
+### Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
 ### Running the Game
 
 ```bash
