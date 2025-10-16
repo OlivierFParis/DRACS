@@ -4,6 +4,7 @@ from operator import indexOf
 import numpy as np
 
 from computer import ACTIONS
+import computer
 
 
 class Game:
@@ -53,11 +54,11 @@ class Game:
         action_state_window = self.encode_sequence(self.history, current_state).reshape(1, -1)
         p1_action = self.player_1.play(action_state_window, current_state, 0)
         p2_action = self.player_2.play(action_state_window, current_state, 1)
-        if self.player_2.predict == p1_action:
+        if isinstance(self.player_2, computer.Computer) and self.player_2.predict == p1_action:
             self.acc_prediction += 1
         else:
             self.innac_prediction += 1
-        self.player_2.model_update(action_state_window, p1_action-1)
+        if isinstance(self.player_2, computer.Computer): self.player_2.model_update(action_state_window, p1_action-1)
 
         player_actions = [p1_action, p2_action]
         if self.training_game: self.loggers.record(action_state_window.copy(), player_actions.copy())

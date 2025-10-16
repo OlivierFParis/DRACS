@@ -41,9 +41,14 @@ def start_game():
     choice_2 = input("Game Mode:\n1. Player vs AI (Default)\n2. Player vs Player\n3. Exit\n").strip().upper()
     match choice_2:
         case "1" | "AI":
+            prediction = [0, 0]
             player_1 = Player(health_point, mana_point, "Player 1")
             computer = Computer(health_point, mana_point, diff_selection())
-            Game(num_turns_max, player_1, computer)
+            game = Game(num_turns_max, player_1, computer)
+            prediction[0] += game.acc_prediction
+            prediction[1] += game.innac_prediction
+            print(f"Correct Prediction: {prediction[0]}\nIncorrect Prediction: {prediction[1]}")
+            print(f"Successful Prediction (Ratio): {(prediction[0]/(prediction[0]+prediction[1]))*100}%\n")
         case "2" | "PLAYER":
             player_1 = Player(health_point, mana_point, "Player 1")
             player_2 = Player(health_point, mana_point, "Player 2")
@@ -155,7 +160,7 @@ def ai_vs_ai():
         action_viewer = False
     inc_cell_num = 1 + math.ceil((-10+math.sqrt(100-4*(-20*game_number)))/20)
     inc_win_count = [[0,0,0,0] for _ in range(inc_cell_num)]
-    successful_prediction = [0,0]
+    prediction = [0,0]
     game_count = 10
     multi_number_game = 0
     for i in range(game_number):
@@ -168,27 +173,30 @@ def ai_vs_ai():
         computer_1 = Computer(health_point, mana_point, "AI_SIMPLE", action_viewer = action_viewer)
         # computer_1 = Computer(health_point, mana_point, "AI_RANDOM", action_viewer = action_viewer)
         # computer_1 = Computer(health_point, mana_point, "AI_GBC", action_viewer = action_viewer)
-        # computer_2 = Computer(health_point, mana_point, "AI_ADAPTIVE", action_viewer = action_viewer)
-        computer_2 = Computer(health_point, mana_point, "AI_GBC", action_viewer = action_viewer)
+        computer_2 = Computer(health_point, mana_point, "AI_ADAPTIVE", action_viewer = action_viewer)
+        # computer_2 = Computer(health_point, mana_point, "AI_GBC", action_viewer = action_viewer)
         game = Game(num_turns_max, computer_1, computer_2, action_viewer = action_viewer)
         if game.winner == 1:
-            successful_prediction[0] += game.acc_prediction
-            successful_prediction[1] += game.innac_prediction
+            prediction[0] += game.acc_prediction
+            prediction[1] += game.innac_prediction
             inc_win_count[int(game_count/10-1)][0] += 1
         elif game.winner == 2:
-            successful_prediction[0] += game.acc_prediction
-            successful_prediction[1] += game.innac_prediction
+            prediction[0] += game.acc_prediction
+            prediction[1] += game.innac_prediction
             inc_win_count[int(game_count / 10 - 1)][1] += 1
         elif game.winner == 0:
-            successful_prediction[0] += game.acc_prediction
-            successful_prediction[1] += game.innac_prediction
+            prediction[0] += game.acc_prediction
+            prediction[1] += game.innac_prediction
             inc_win_count[int(game_count / 10 - 1)][2] += 1
     Win_count = [0,0,0]
     for i in range(len(inc_win_count)):
         Win_count[0] += inc_win_count[i][0]
         Win_count[1] += inc_win_count[i][1]
         Win_count[2] += inc_win_count[i][2]
-    print(f"Winning Board: {inc_win_count}\nSuccessful Prediction: {successful_prediction}\nWin Count for Computer 1: {Win_count[0]}\nWin Count for Computer 2: {Win_count[1]}\nNumber of Ties: {Win_count[2]}\n")
+    print(f"Winning Board: {inc_win_count}\nWin Count for Computer 1: {Win_count[0]}\nWin Count for Computer 2: {Win_count[1]}\nNumber of Ties: {Win_count[2]}\n")
+    print(f"Correct Prediction: {prediction[0]}\nIncorrect Prediction: {prediction[1]}")
+    print(f"Successful Prediction (Ratio): {(prediction[0] / (prediction[0] + prediction[1])) * 100}%\n")
+
 
 
 def training_set():
