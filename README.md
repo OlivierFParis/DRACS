@@ -52,7 +52,7 @@ Each model is defined in `computer.py` and can play either against a human playe
 
 * **Gradient Boosting (GBC)**
 
-  * Pre-trained on historical data (`data/GBC_Training.csv`).
+  * Pre-trained on historical data (`data/GBC_Training_K3_HP5_MP3.csv`).
   * Learns globally optimal strategies from multiple simulated games.
   * Static model — predictions are not updated during play.
 
@@ -68,14 +68,15 @@ DRACS/
 │   ├── game.py                # Core game loop and win/loss conditions
 │   ├── player.py              # Human player logic and state tracking
 │   ├── computer.py            # AI model definitions and decision logic
-│   └── Rules.txt              # Additional gameplay information and mechanics
+│   ├── config.py              # Game settings and checks to validate existence of the models
+│   └── Rules.txt              # Additional gameplay information, mechanics, and general information
 │
 ├── data/
-│   └── GBC_Training.csv       # Training dataset for the Gradient Boosting model
+│   └── GBC_Training_K3_HP5_MP3.csv           # Training dataset for the Gradient Boosting model
 │
 ├── models/
-│   ├── DRACS_ADPT_model_AIvsAI_TRAINED.pkl   # Saved adaptive (SGD) model
-│   └── DRACS_GBC_model_AIvsAI_TRAINED.pkl    # Trained Gradient Boosting model
+│   ├── DRACS_ADAPTIVE_MODEL_K3_HP5_MP3.pkl   # Saved adaptive (SGD) model
+│   └── DRACS_GBC_MODEL_K3_HP5_MP3.pkl        # Trained Gradient Boosting model
 │
 ├── requirements.txt           # Python dependencies for the project
 ├── LICENSE                    # MIT license file
@@ -135,7 +136,10 @@ Performance is measured across:
 Experiments show that:
 
 * The adaptive model improves steadily after 50–100 rounds.
+* The trained adaptive model is able to adapt to the player's pattern after approximately 1 game.
+* The adaptive model achieves ~63-78% accuracy in test simulations.
 * The gradient boosting model achieves ~77–80% prediction accuracy in test simulations.
+* The adaptive model overwhelmingly wins over the Simple algorithm, and the gradient boosting model, with ~97-99.9% win rate.
 
 ---
 
@@ -144,6 +148,5 @@ Experiments show that:
 * Graphical User Interface (Tkinter or Pygame)
 * Additional actions and effects
 * Reinforcement Learning agent
-* Parameter tuning and model comparison utilities
 
 ---
