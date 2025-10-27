@@ -33,7 +33,7 @@ On a successful block (i.e., the opponent decided to use ATTACK), the attacker w
 If the opponent does not attack, nothing occurs.
 
 HOWEVER, if the opponent uses STEAL, the user will lose 1 mp. If the user does not have any mp left, the opponent will instead steal 1 hp.
-Make sure to balance DEFEND with other actions to prevent that from occuring.
+Make sure to balance DEFEND with other actions to prevent that from occurring.
 
 ***REST***
 REST allows the user to gain 2 mp.
@@ -55,12 +55,81 @@ When using STEAL:
 	IF the opponent uses REST -> Steal 1 mp and 1 hp and add it to the user's.
 	IF the opponent uses ATTACK -> Steal 1 hp from the opponent. The result is the opponent losing 1 hp, while the user remains at what they had. Can save from death.
 	IF the opponent uses COUNTER -> Steal 1 mp and 1 hp and add it to the user's.
-	IF the opponent uses STEAL -> Both nulify one another and nothing occurs.
+	IF the opponent uses STEAL -> Both nullify one another and nothing occurs.
 
 
 --PARAMETERS--
-The user can change the parameters of the game such as hp, mp, or number of turn in the parameter option at the start of the game.
+The parameters form the core of DRACS.
+There are 4 parameters that the user can change.
+Health Points (hp): Indicates how many points of life the players begin with. You cannot go over this value. If hp reaches 0, the game will end.
+Mana Points (mp): Indicates how many points of magic the players can reach through REST. You cannot go over this value. You currently always begin with 0 mp.
+Number of Turns: The number of rounds in one game. By default it is set to 20. I do not recommend increasing this value, especially before assessing the algorithms, as some of them end up in a stalemate and consume every single round.
+History Window: History Window is a special parameter. By default, the algorithms (Adaptive & GBC) are trained from the actions taken during the past 3 turns. History Window therefore increases the actions that are considered by the algorithms, during the game, or during training. Increasing the History Window may result in the Adaptive algorithm recognizing common patterns more rapidly, or instead result in overfitting. 
+Changing Health Points, Mana Points, and History Window will prompt the user to train the models or to return back to the default parameters.
+Changing the Number of Turns does not have any direct effect on the models, but will result in longer or shorter training time, game, and synonymously larger or smaller file size (for GBC mostly).
 
 
 --FUTURE--
 If I find the time, I may modify the ML algorithm or add special opponents.
+
+
+--EXTRA INFORMATION--
+DRACS contains many different menu and options, which may be confusing for some. Here are what the main options and selections do:
+
+**MAIN MENU**
+- Start Game: Opens Start Game Menu.
+- Rules: Display this information.
+- Parameters: Opens Parameters Menu.
+- AI vs AI: Opens the AI vs AI Menu.
+- Training: Activates Training Mode to generate the default model (Adaptive).
+- Predictive Algorithm Assessment: Makes every single AI model fight against one another, and displays the statistical output.
+- Exit: Closes the game.
+
+**START GAME**
+- Player vs AI: Will ask the player for the model they want to fight against, and initiate the game.
+- Player vs Player: For when two human players want to play against one another.
+- Exit: Returns back to Main Menu.
+
+**PARAMETERS**
+Allows the user to change the core parameter of the game. *SEE "--PARAMETERS--" ABOVE FOR A DESCRIPTION OF EACH.
+
+**AI vs AI**
+Makes two AI model fight against one another. Please note that currently, the Adaptive model struggles when set as Computer 1.
+The Default models that are put against one another are the Simple model and the Adaptive model.
+The user will be asked if they desire to see each actions of the AI models. It is recommended to keep it at False, as the selections are too rapid to discern. Selecting True can be useful for debugging purposes.
+The output of doing AI vs AI, will be multiple "Winning Boards" which is an array showing the number of wins for the first AI model, the second AI model, the number of ties, and the ratio of wins for the second model over the first. The sum total of each is displayed underneath with the predictive statistics for the second model chosen.
+
+**TRAINING**
+The training mode will make the Random and the Simple model fight alternatively against one another.
+As the Simple model is based off a hard-coded decision matrix, any change in parameters may result in varying effectiveness for the downstream AI models.
+Creating the training set for the GBC model can take a very long time depending on the computer used. I therefore do not recommend training for the GBC model, unless the user desires to do the algorithmic assessment, or are curious about the difference between fighting against the GBC model and the Adaptive model. 
+
+**PREDICTIVE ALGORITHM ASSESSMENT**
+Will make every single AI model fight against one another, and display the statistical output afterwards.
+By default, if the GBC model or the Adaptive model do not exist, it will force the user to undergo training. 
+The statistics displayed are a win count for each model, the number of ties, and the number of correct and incorrect prediction made by the relevant models.
+The Successful Prediction (Ratio) is the computed value of correct prediction over total prediction.
+
+
+--MODEL ASSESSMENT--
+From my own testing with 1000 games and using the default parameters, here are the following significant outputs:
+
+- Simple model wins against Random ~77% of the time.
+- Adaptive model wins against Random ~65% of the time, with a prediction ratio of ~27%.
+- GBC model wins against Random ~54% of the time, with a prediction ratio of ~27%.
+- Adaptive model wins against Simple ~77% of the time, with a prediction ratio ~80%.
+- GBC model wins against Simple ~94% of the time, with a prediction ratio ~68%.
+- Adaptive model and GBC model are tied 99.5% of the time, with a prediction ratio by Adaptive of ~99.67%.
+
+
+After fixing some issues, I spotted some issues in the code, such as the perspective fed to the algorithms, or directly when calculating for the expected value an action would have against the predictive action of the opponent. After correcting them, I tested all the algorithms again, this time with 5000 games, still using the default parameters, here are the following significant outputs:
+
+- Simple model wins against Random ~78% of the time.
+- Adaptive model wins against Random ~64% of the time, with a prediction ratio of ~27%.
+- GBC model wins against Random ~62% of the time, with a prediction ratio of ~28%.
+- Adaptive model wins against Simple ~97% of the time, with a prediction ratio ~78%.
+- GBC model wins against Simple ~96% of the time, with a prediction ratio ~79%.
+- Adaptive model overwhelmingly wins against GBC model ~99.96% of the time, with a prediction ratio by Adaptive of ~99.89%.
+
+* The major increase in the Adaptive model's win rate against Simple, is most likely the result of correcting an issue in the calculation of the expected value.
+* The major increase in the Adaptive model's win rate against GBC is most likely the result of the data that was previously being given to GBC during prediction. Previously, it was attempting to predict player 1's action, which was the same thing that Adaptive was concurrently doing. As such, they would end in a stalemate. Presently, GBC is attempting to predict the other player's action, whether that be player 1 or player 2. Thus, we see the Adaptive model recognizing patterns in the actions taken by GBC, quite rapidly, and overwhelmingly beating GBC. Since GBC does not update, and is instead a static model, it ends up repeating actions in certain conditions. In fact, out of the 5000 games, GBC managed to win twice, which I believe to be the first 2 games. Once Adaptive learned GBC's patterns, it most likely won the following 4998 games.
