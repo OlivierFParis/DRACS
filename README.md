@@ -117,6 +117,7 @@ python game/main.py
 * **Player vs AI**
 * **AI vs AI** (for evaluation)
 * **Training Mode** (to collect gameplay data)
+* **Predictive Algorithm Assessment** (to evaluate the performance of every model against one another)
 
 ### Gameplay
 
