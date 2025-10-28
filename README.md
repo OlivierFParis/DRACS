@@ -116,7 +116,7 @@ python game/main.py
 
 * **Player vs AI**
 * **AI vs AI** (for evaluation)
-* **Training Mode** (to collect gameplay data)
+* **Training Mode** (to train the models and collect gameplay data)
 * **Predictive Algorithm Assessment** (to evaluate the performance of every model against one another)
 
 ### Gameplay
@@ -138,7 +138,7 @@ Experiments show that:
 
 * The adaptive model improves steadily after 50–100 rounds.
 * The trained adaptive model is able to adapt to the player's pattern after approximately 1 game.
-* The adaptive model achieves ~63-78% accuracy in test simulations.
+* The adaptive model achieves ~63-78% prediction accuracy in test simulations.
 * The gradient boosting model achieves ~77–80% prediction accuracy in test simulations.
 * The adaptive model overwhelmingly wins over the Simple algorithm, and the gradient boosting model, with ~97-99.9% win rate.
 
